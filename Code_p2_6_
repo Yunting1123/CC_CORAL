@@ -1,0 +1,31 @@
+//Code_p2, yellow breath light
+//Group Coral, Carol Chen, Ethan Zhang, Yanjia Yi, Yunting He
+
+#include <FastLED.h>
+
+#define DATA_PIN_7 8 // strip 6
+#define NUM_LEDS_7 10 // how many leds
+
+CRGB leds7[NUM_LEDS_7];
+
+void setup() {
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_7>(leds7, NUM_LEDS_7);
+}
+
+// breath light effects
+void breathleds(CRGB* leds){
+  int breaktime = random(500,1000);
+ int numLeds = random(10);
+ leds[numLeds] = CRGB(250,224,2);
+ FastLED.show();
+ delay(breaktime);
+ leds[numLeds] = CRGB(0,0,0); 
+ FastLED.show();
+ delay(breaktime);
+}
+
+void loop(){
+// loop, breath without sensor.
+breathleds(leds7);
+
+}
