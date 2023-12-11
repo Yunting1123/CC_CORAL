@@ -1,0 +1,145 @@
+//Code_p1, yellow breath light
+//Group Coral, Carol Chen, Ethan Zhang, Yanjia Yi, Yunting He
+
+#include <FastLED.h>
+
+//light sensor pin
+int lightSensorPin1 = A0; 
+int lightSensorPin2 = A1;
+
+int lightSensorPin3 = A2;
+//light Value
+int lightSensorVal_1;
+int lightSensorVal_2;
+int lightSensorVal_3;
+int threshold = 200;
+
+
+#define DATA_PIN_1 2 // strip 1
+#define NUM_LEDS_1 85 // how many leds
+
+
+#define DATA_PIN_2 6 // strip 2
+#define NUM_LEDS_2 25 // how many leds
+
+
+#define DATA_PIN_3 3 // strip 3
+#define NUM_LEDS_3 19 // how many leds
+
+
+#define DATA_PIN_4 4 // strip 4
+#define NUM_LEDS_4 14 // how many leds
+
+
+#define DATA_PIN_5 5 // strip 5
+#define NUM_LEDS_5 6 // how many leds
+
+
+#define DATA_PIN_6 7 // strip 6
+#define NUM_LEDS_6 60 // how many leds
+
+#define DATA_PIN_7 8 // strip 5
+#define NUM_LEDS_7 10 // how many leds
+
+CRGB leds1[NUM_LEDS_1];
+CRGB leds2[NUM_LEDS_2];
+CRGB leds3[NUM_LEDS_3];
+CRGB leds4[NUM_LEDS_4];
+CRGB leds5[NUM_LEDS_5];
+CRGB leds6[NUM_LEDS_6];
+CRGB leds7[NUM_LEDS_7];
+
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(lightSensorPin1, INPUT);
+  pinMode(lightSensorPin2, INPUT);
+  pinMode(lightSensorPin3, INPUT);
+
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_1>(leds1, NUM_LEDS_1);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_2>(leds2, NUM_LEDS_2);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_3>(leds3, NUM_LEDS_3);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_4>(leds4, NUM_LEDS_4);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_5>(leds5, NUM_LEDS_5);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_6>(leds6, NUM_LEDS_6);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_7>(leds7, NUM_LEDS_7);
+
+  setInitialColor(leds1, NUM_LEDS_1, CRGB(2, 0, 0)); 
+  setInitialColor(leds2, NUM_LEDS_2, CRGB(3, 0, 8));
+  setInitialColor(leds3, NUM_LEDS_3, CRGB(3, 0, 8));
+  setInitialColor(leds4, NUM_LEDS_4, CRGB(1, 1, 3));
+  setInitialColor(leds5, NUM_LEDS_5, CRGB(1, 1, 3));
+  setInitialColor(leds6, NUM_LEDS_6, CRGB(6, 5, 1));
+}
+// set initial color
+void setInitialColor(CRGB* leds, int numLeds, CRGB color) {
+  for (int i = 0; i < numLeds; i++) {
+    leds[i] = color;
+  }
+  FastLED.show();
+}
+
+// animation, light will light up each
+void animateLeds(CRGB* leds, int numLeds, CRGB color) {
+  for (int i = 0; i < numLeds; i++) {
+    leds[i] = color;
+    FastLED.show();
+    delay(50);
+  }
+}
+
+// turn off the light
+void clearLeds(CRGB* leds, int numLeds) {
+  for (int i = 0; i < numLeds; i++) {
+    leds[i] = CRGB::Black;
+  }
+  FastLED.show();
+}
+
+
+void loop() {
+
+  lightSensorVal_1 = analogRead(lightSensorPin1);
+  //Serial.println(lightSensorVal_1);, use for check and the threshold.
+  lightSensorVal_2 = analogRead(lightSensorPin2);
+  lightSensorVal_3 = analogRead(lightSensorPin3);
+
+//red strips
+  if (lightSensorVal_1 <= threshold) {
+    animateLeds(leds1, NUM_LEDS_1, CRGB(198,0,0));
+  } else {
+        //if threshold archieve, then set the darker colour
+    clearLeds(leds1, NUM_LEDS_1);
+ setInitialColor(leds1, NUM_LEDS_1, CRGB(2, 0, 0)); 
+
+  }
+
+  // four blue strip at the bottom
+  if (lightSensorVal_2 <= threshold) {
+    animateLeds(leds2, NUM_LEDS_2, CRGB(100,2,250));
+    animateLeds(leds3, NUM_LEDS_3, CRGB(100,2,250));
+    animateLeds(leds4, NUM_LEDS_4, CRGB(94,63,250));
+    animateLeds(leds5, NUM_LEDS_5, CRGB(94,63,250));
+  } else {
+    //if threshold archieve, then set the darker colour
+    clearLeds(leds2, NUM_LEDS_2);
+    setInitialColor(leds2, NUM_LEDS_2, CRGB(3, 0, 8));
+    clearLeds(leds3, NUM_LEDS_3);
+    setInitialColor(leds3, NUM_LEDS_3, CRGB(3, 0, 8));
+    clearLeds(leds4, NUM_LEDS_4);
+    setInitialColor(leds4, NUM_LEDS_4, CRGB(1, 1, 3));
+    clearLeds(leds5, NUM_LEDS_5);
+    setInitialColor(leds5, NUM_LEDS_5, CRGB(1, 1, 3));
+
+  }
+  
+
+// light blue strips,right side.
+  if (lightSensorVal_3 <= threshold) {
+    animateLeds(leds6, NUM_LEDS_6, CRGB(30,247,178));
+   //if threshold archieve, then set the darker colour
+  } else {
+    clearLeds(leds6, NUM_LEDS_6);
+    setInitialColor(leds6, NUM_LEDS_6, CRGB(3, 2, 1));
+
+  }
