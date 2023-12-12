@@ -1,5 +1,5 @@
 //project: She was the universe
-//Code_p2, yellow breath light
+//Code_p2, three sensor trigger the gradually light up led lights
 //Group Coral, Carol Chen, Ethan Zhang, Yanjia Yi, Yunting He
 
 #include <FastLED.h>
